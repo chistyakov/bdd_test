@@ -4,7 +4,8 @@
 >  * принимает по http параметр - id
 >  * на основе полученного id возвращает json с ФИО пользователя
 > 2. Написать на Python автотесты для функционального тестирования этого Web-сервиса 
----
+
+
 > 1. Write a Python web-service (stub). It should:
 >  * receive the parameter 'id' via HTTP
 >  * return JSON with full name of user by id
