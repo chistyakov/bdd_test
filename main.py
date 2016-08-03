@@ -43,14 +43,15 @@ class FullNameProviderRequestHandler(BaseHTTPRequestHandler):
     error_message_format = u'{"Error code": %(code)d, "Message": "%(message)s", "Error code explanation": "%(explain)s"}'
     def do_GET(self):
         if not self.is_accepted_content_type_supported():
-            self.send_error(415)
+            self.send_error(415, message="server supports only {0} mime type".format(
+                self.SUPPORTED_HEADER))
             return
         try:
             self.send_full_name_json()
-        except UserNotFoundExcpetion:
-            self.send_error(404)
-        except CannotGetUserId:
-            self.send_error(400)
+        except UserNotFoundExcpetion, e:
+            self.send_error(404, message=str(e))
+        except CannotGetUserId, e:
+            self.send_error(400, message=str(e))
         return
 
     def send_full_name_json(self):
@@ -65,7 +66,7 @@ class FullNameProviderRequestHandler(BaseHTTPRequestHandler):
         try:
             return int(extract_query_param_from_url_path(self.path, 'id'))
         except (KeyError, ValueError):
-            raise CannotGetUserId("can not extract user id from URL {0}".format(self.path))
+            raise CannotGetUserId("can not extract user id from path {0}".format(self.path))
 
     def _get_user_full_name_data(self, user_id):
         user = self.server.find_user_by_id(user_id)
