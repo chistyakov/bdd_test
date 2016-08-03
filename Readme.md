@@ -1,11 +1,12 @@
 # Task from job interview
 ## Task
+### Ru
 > 1. Написать на Python Web-сервис(заглушку), такой, что:
 >  * принимает по http параметр - id
 >  * на основе полученного id возвращает json с ФИО пользователя
 > 2. Написать на Python автотесты для функционального тестирования этого Web-сервиса 
 
-
+### En
 > 1. Write a Python web-service (stub). It should:
 >  * receive the parameter 'id' via HTTP
 >  * return JSON with full name of user by id
