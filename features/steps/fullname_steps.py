@@ -51,3 +51,28 @@ def step_impl(context):
 @then('server returns 415')
 def step_impl(context):
     assert context.response.status_code == 415
+
+@given('there are users on server')
+def step_impl(context):
+    test_user_data1 = {
+            'id': 1,
+            'name': 'Alexander',
+            'surname': 'Chistyakov',
+            'patronymic': 'Olegovich'
+        }
+    test_user_data2 = {
+            'id': 2,
+            'name': 'Roman',
+            'surname': 'Dmitrachenkov',
+            'patronymic': 'Valerievich'
+        }
+    context.server.add_user(test_user_data1)
+    context.server.add_user(test_user_data2)
+
+@when('we send request with {id}')
+def step_impl(context, id):
+    context.response = requests.get('http://127.0.0.1:8080/?id={0}'.format(id))
+
+@then('server returns {code}')
+def step_impl(context, code):
+    assert context.response.status_code == int(code)
