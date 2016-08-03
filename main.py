@@ -41,9 +41,8 @@ class CannotGetUserId(Exception):
 class FullNameProviderRequestHandler(BaseHTTPRequestHandler):
     SUPPORTED_HEADER = 'application/json'
     error_content_type = SUPPORTED_HEADER
-    error_message_format = '{"Error code": %(code)d, "Message": "%(message)s", "Error code explanation": "%(explain)s"}'
+    error_message_format = u'{"Error code": %(code)d, "Message": "%(message)s", "Error code explanation": "%(explain)s"}'
     def do_GET(self):
-        print(self.headers)
         if not self.is_accepted_content_type_supported():
             self.send_error(415)
             return
