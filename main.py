@@ -37,8 +37,9 @@ class CannotGetUserId(Exception):
 
 class FullNameProviderRequestHandler(BaseHTTPRequestHandler):
     SUPPORTED_HEADER = 'application/json'
+    error_content_type = SUPPORTED_HEADER
+    error_message_format = '{"Error code": %(code)d, "Message": "%(message)s", "Error code explanation": "%(explain)s"}'
     def do_GET(self):
-        self.set_error_content_type_to_json()
         if not self.is_content_type_supported():
             self.send_error(415)
             return
@@ -68,10 +69,6 @@ class FullNameProviderRequestHandler(BaseHTTPRequestHandler):
         user = self.server.find_user_by_id(user_id)
         return get_ordered_subdict(user, 'name', 'surname', 'patronymic')
 
-    def set_error_content_type_to_json(self):
-        self.error_content_type = self.SUPPORTED_HEADER
-        self.error_message_format = '{"Error code": %(code)d, "Message": "%(message)s", "Error code explanation": "%(explain)s"}'
-
     def is_content_type_supported(self):
         upper_headers = {key.upper(): self.headers[key].upper() for key in self.headers}
         return self.SUPPORTED_HEADER.upper() in upper_headers.get('CONTENT-TYPE', self.SUPPORTED_HEADER.upper())
@@ -85,7 +82,7 @@ def extract_query_param_from_url_path(url, param_name):
 
 
 def get_ordered_subdict(D, *key_names_to_get):
-    subset = OrderedDict([(name, D.get(name, None)) for name in key_names_to_get])
+    subset = OrderedDict([(name, D.get(name, '')) for name in key_names_to_get])
     return subset
 
 

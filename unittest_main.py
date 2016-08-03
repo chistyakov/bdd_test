@@ -80,4 +80,4 @@ class TestGetOrderedSubdict(unittest.TestCase):
 
     def test_key_not_exist(self):
         D = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
-        self.assertEqual(get_ordered_subdict(D, 'd', 'a', 'f'), OrderedDict([('d', 4), ('a', 1), ('f', None)]))
+        self.assertEqual(get_ordered_subdict(D, 'd', 'a', 'f'), OrderedDict([('d', 4), ('a', 1), ('f', '')]))

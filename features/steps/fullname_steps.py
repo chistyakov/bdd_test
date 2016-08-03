@@ -60,10 +60,25 @@ def step_impl(context):
     context.server.add_user(test_user_data1)
     context.server.add_user(test_user_data2)
 
-@when('we send request with {id}')
-def step_impl(context, id):
-    context.response = requests.get('http://127.0.0.1:8080/?id={0}'.format(id))
+@when('we send request with {identificator}')
+def step_impl(context, identificator):
+    context.response = requests.get('http://127.0.0.1:8080/?id={0}'.format(identificator))
 
 @when('we use not suppported HTTP method')
 def step_impl(context):
-    context.response = requests.post('http://127.0.0.1:8080/', data = {'key':'value'})
+    context.response = requests.post('http://127.0.0.1:8080/', data={'key':'value'})
+
+@given('the user does not have surname')
+def step_impl(context):
+    test_user_no_surname = {
+            'id': 1,
+            'name': 'Aron',
+            'patronymic': 'Gunnarsson'
+        }
+    context.server.add_user(test_user_no_surname)
+
+@then('server returns JSON with empty surname of the user')
+def step_impl(context):
+    assert context.response.headers['Content-Type'] == 'application/json'
+    print(context.response.json())
+    assert context.response.json() == {'name': 'Aron', 'surname': '', 'patronymic': 'Gunnarsson'}

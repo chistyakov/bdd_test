@@ -32,7 +32,12 @@ Feature: Return user's full name
             | 1e-6 | 400  |
             | two  | 400  |
 
-
     Scenario: Not supported HTTP method
         When we use not suppported HTTP method
         Then server returns HTTP status code 501
+
+    Scenario: User without surname
+        Given the user does not have surname
+        When we request the user by id
+        Then server returns HTTP status code 200
+        And server returns JSON with empty surname of the user
