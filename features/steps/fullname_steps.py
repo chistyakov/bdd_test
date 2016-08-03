@@ -21,7 +21,7 @@ def step_impl(context):
 
 @then('server returns JSON with full name of the user')
 def step_impl(context):
-    assert context.response.headers['Content-Type'] == 'application/json; charset=utf8'
+    assert context.response.headers['Content-Type'] == 'application/json'
     assert context.response.json() == {
             'name': 'Alexander',
             'surname': 'Chistyakov',
@@ -43,3 +43,11 @@ def step_impl(context):
 @then('server returns 400')
 def step_impl(context):
     assert context.response.status_code == 400
+
+@when('we send request with not supported Content-Type')
+def step_impl(context):
+    context.response = requests.get('http://127.0.0.1:8080/?id=1', headers={'Content-Type': 'application/xml'})
+
+@then('server returns 415')
+def step_impl(context):
+    assert context.response.status_code == 415

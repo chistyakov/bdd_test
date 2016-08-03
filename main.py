@@ -36,20 +36,24 @@ class CannotGetUserId(Exception):
 
 
 class FullNameProviderRequestHandler(BaseHTTPRequestHandler):
+    SUPPORTED_HEADER = 'application/json'
     def do_GET(self):
+        if not self.is_content_type_supported():
+            self.send_error(415)
+            return
         try:
             self.send_full_name_json()
         except UserNotFoundExcpetion:
-            self.send_response(404)
+            self.send_error(404)
         except CannotGetUserId:
-            self.send_response(400)
+            self.send_error(400)
         return
 
     def send_full_name_json(self):
         user_id = self._get_user_id()
         user_full_name_data = self._get_user_full_name_data(user_id)
         self.send_response(200)
-        self.send_header('Content-Type', 'application/json; charset=utf8')
+        self.send_header('Content-Type', self.SUPPORTED_HEADER)
         self.end_headers()
         self.wfile.write(json.dumps(user_full_name_data))
 
@@ -63,6 +67,9 @@ class FullNameProviderRequestHandler(BaseHTTPRequestHandler):
         user = self.server.find_user_by_id(user_id)
         return get_ordered_subdict(user, 'name', 'surname', 'patronymic')
 
+    def is_content_type_supported(self):
+        upper_headers = {key.upper(): self.headers[key].upper() for key in self.headers}
+        return self.SUPPORTED_HEADER.upper() in upper_headers.get('CONTENT-TYPE', self.SUPPORTED_HEADER.upper())
 
 
 def extract_query_param_from_url_path(url, param_name):

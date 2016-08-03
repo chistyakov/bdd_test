@@ -13,3 +13,7 @@ Feature: Return user's full name
     Scenario: Corrupted query
         When we send request with malformed query
         Then server returns 400
+
+    Scenario: Not supported Content-Type
+        When we send request with not supported Content-Type
+        Then server returns 415
