@@ -27,6 +27,9 @@ class FullNameProviderHTTPServer(HTTPServer):
         except UserNotFoundExcpetion:
             pass
 
+    def drop_all_users(self):
+        self.users_list = []
+
 
 class UserNotFoundExcpetion(Exception):
     pass

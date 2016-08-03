@@ -41,3 +41,8 @@ Feature: Return user's full name
         When we request the user by id
         Then server returns HTTP status code 200
         And server returns JSON with empty surname of the user
+
+    Scenario: No-no user
+        Given there is not user on server
+        When we request the user by id
+        Then server returns HTTP status code 404

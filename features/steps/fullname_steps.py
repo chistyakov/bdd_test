@@ -82,3 +82,8 @@ def step_impl(context):
     assert context.response.headers['Content-Type'] == 'application/json'
     print(context.response.json())
     assert context.response.json() == {'name': 'Aron', 'surname': '', 'patronymic': 'Gunnarsson'}
+
+
+@given('there is not user on server')
+def step_impl(context):
+    context.server.drop_all_users()
