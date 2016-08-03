@@ -6,7 +6,6 @@ from mock import patch
 from main import CannotGetUserId, FullNameProviderRequestHandler, get_ordered_subdict
 
 
-
 class TestGetUserId(unittest.TestCase):
     def setUp(self):
         #do not want to test the super class BaseRequestHandler
@@ -20,11 +19,11 @@ class TestGetUserId(unittest.TestCase):
         self.handler.path = "http://127.0.0.1:8080/?id=1"
         self.assertEqual(self.handler._get_user_id(), 1)
 
-    def test_no_port_slash_and_id(self):
+    def test_no_port(self):
         self.handler.path = "http://127.0.0.1/?id=1"
         self.assertEqual(self.handler._get_user_id(), 1)
 
-    def test_no_slash_and_id(self):
+    def test_no_slash(self):
         self.handler.path = "http://127.0.0.1:8080?id=1"
         self.assertEqual(self.handler._get_user_id(), 1)
 
@@ -53,7 +52,7 @@ class TestGetUserId(unittest.TestCase):
         with self.assertRaises(CannotGetUserId):
             self.handler._get_user_id()
 
-    def test_two_id(self):
+    def test_two_ids(self):
         self.handler.path = "http://127.0.0.1:8080/?id=1&id=2"
         self.assertEqual(self.handler._get_user_id(), 1)
 
