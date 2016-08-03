@@ -5,7 +5,6 @@ import json
 from urlparse import urlparse, parse_qs
 
 
-
 class FullNameProviderHTTPServer(HTTPServer):
     def __init__(self, *args, **kwargs):
         HTTPServer.__init__(self, *args, **kwargs)
@@ -84,7 +83,6 @@ def extract_query_param_from_url_path(url, param_name):
     return query_dict[param_name][0]
 
 
-
 def get_ordered_subdict(D, *key_names_to_get):
     subset = OrderedDict([(name, D.get(name, '')) for name in key_names_to_get])
     return subset
@@ -96,13 +94,20 @@ def main():
         PORT_NUMBER = 8080
         httpd = FullNameProviderHTTPServer((SERVER_NAME, PORT_NUMBER),
             FullNameProviderRequestHandler)
-        test_user_data = {
+        test_user_data1 = {
                 'id': 1,
                 'name': 'Alexander',
                 'surname': 'Chistyakov',
                 'patronymic': 'Olegovich'
             }
-        httpd.add_user(test_user_data)
+        test_user_data2 = {
+                'id': 2,
+                'name': 'Roman',
+                'surname': 'Dmitrachenkov',
+                'patronymic': 'Valerievich'
+            }
+        httpd.add_user(test_user_data1)
+        httpd.add_user(test_user_data2)
         httpd.serve_forever()
     except KeyboardInterrupt:
         pass
