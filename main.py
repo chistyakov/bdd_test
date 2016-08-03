@@ -43,7 +43,8 @@ class FullNameProviderRequestHandler(BaseHTTPRequestHandler):
     error_content_type = SUPPORTED_HEADER
     error_message_format = '{"Error code": %(code)d, "Message": "%(message)s", "Error code explanation": "%(explain)s"}'
     def do_GET(self):
-        if not self.is_content_type_supported():
+        print(self.headers)
+        if not self.is_accepted_content_type_supported():
             self.send_error(415)
             return
         try:
@@ -72,9 +73,10 @@ class FullNameProviderRequestHandler(BaseHTTPRequestHandler):
         user = self.server.find_user_by_id(user_id)
         return get_ordered_subdict(user, 'name', 'surname', 'patronymic')
 
-    def is_content_type_supported(self):
+    def is_accepted_content_type_supported(self):
         upper_headers = {key.upper(): self.headers[key].upper() for key in self.headers}
-        return self.SUPPORTED_HEADER.upper() in upper_headers.get('CONTENT-TYPE', self.SUPPORTED_HEADER.upper())
+        accept_header = upper_headers.get('ACCEPT', self.SUPPORTED_HEADER.upper())
+        return (r"*/*" in accept_header) or (self.SUPPORTED_HEADER.upper() in accept_header)
 
 
 def extract_query_param_from_url_path(url, param_name):

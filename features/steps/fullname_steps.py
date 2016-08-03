@@ -38,9 +38,9 @@ def step_impl(context):
 def step_impl(context):
     context.response = requests.get('http://127.0.0.1:8080/?id==1')
 
-@when('we send request with not supported Content-Type')
+@when('we send request with not supported Accept header')
 def step_impl(context):
-    context.response = requests.get('http://127.0.0.1:8080/?id=1', headers={'Content-Type': 'application/xml'})
+    context.response = requests.get('http://127.0.0.1:8080/?id=1', headers={'Accept': 'application/xml'})
 
 
 @given('there are users on server')
@@ -87,3 +87,4 @@ def step_impl(context):
 @given('there is not user on server')
 def step_impl(context):
     context.server.drop_all_users()
+

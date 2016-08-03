@@ -14,8 +14,8 @@ Feature: Return user's full name
         When we send request with malformed query
         Then server returns HTTP status code 400
 
-    Scenario: Not supported Content-Type
-        When we send request with not supported Content-Type
+    Scenario: Not supported Accept
+        When we send request with not supported Accept header
         Then server returns HTTP status code 415
 
     Scenario Outline: Bad id
