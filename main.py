@@ -38,6 +38,7 @@ class CannotGetUserId(Exception):
 class FullNameProviderRequestHandler(BaseHTTPRequestHandler):
     SUPPORTED_HEADER = 'application/json'
     def do_GET(self):
+        self.set_error_content_type_to_json()
         if not self.is_content_type_supported():
             self.send_error(415)
             return
@@ -66,6 +67,10 @@ class FullNameProviderRequestHandler(BaseHTTPRequestHandler):
     def _get_user_full_name_data(self, user_id):
         user = self.server.find_user_by_id(user_id)
         return get_ordered_subdict(user, 'name', 'surname', 'patronymic')
+
+    def set_error_content_type_to_json(self):
+        self.error_content_type = self.SUPPORTED_HEADER
+        self.error_message_format = '{"Error code": %(code)d, "Message": "%(message)s", "Error code explanation": "%(explain)s"}'
 
     def is_content_type_supported(self):
         upper_headers = {key.upper(): self.headers[key].upper() for key in self.headers}
