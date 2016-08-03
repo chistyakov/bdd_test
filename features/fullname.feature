@@ -3,8 +3,10 @@ Feature: Return user's full name
         Given the user exists on server
         When we request the user by id
         Then server returns 200
-        #And server returns JSON with full name of the user
+        And server returns JSON with full name of the user
 
     Scenario: User does not exist
-        # TODO
+        Given the user does not exist on server
+        When we request the user by id
+        Then server returns 404
 
