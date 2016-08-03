@@ -10,3 +10,6 @@ Feature: Return user's full name
         When we request the user by id
         Then server returns 404
 
+    Scenario: Corrupted query
+        When we send request with malformed query
+        Then server returns 400

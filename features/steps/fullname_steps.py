@@ -35,3 +35,11 @@ def step_impl(context):
 @then('server returns 404')
 def step_impl(context):
     assert context.response.status_code == 404
+
+@when('we send request with malformed query')
+def step_impl(context):
+    context.response = requests.get('http://127.0.0.1:8080/?id==1')
+
+@then('server returns 400')
+def step_impl(context):
+    assert context.response.status_code == 400
